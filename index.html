@@ -118,26 +118,22 @@
 <div class="mdl-card mdl-cell mdl-cell--8-col">
 
     
-    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#263238;">
-        <h3><a href="/post/coolpost/" style="color:#ffffff;">Cool Post</a></h3>
+    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#645281;">
+        <h3><a href="/post/jvm/" >Java内存模型学习</a></h3>
     </div>
 
     
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.</p>
-
+        JAVA内存模型学习笔记 jvm运行时的数据区域包括： 方法区、堆 (所有线程共享) 虚拟机栈、本地方法栈、程序计数器 (线程隔离数据区) 执行引擎、本地库接口、本地方法库 程序计数器：线程私有,一块较小的内存空间，可以理解为当前线程执行的字节码的行号指令器，控制字节码的指令执行，线程切换时状态的保留和恢复等； 当执行java方法时，记录正在执行的虚拟机字节码指令，当执行本地native方法时则为undefined,此区域也是jvm规范中唯一一个没有规定任何OutOfMemoryError情况的区域。 虚拟机栈：线程私有，与线程共生死，执行java方法时会入栈栈帧,存储单位为solt，double和long需要两个solt(因此可能造成并发问题,需要注意) 本地方法栈：线程私有，同虚拟机栈，不过是虚拟机使用到native方法服务时使用，有StackOverFlowError和OutOfMemoryError异常。 直接内存：Direct Memory 非jvm运行时数据的一部分，亦非java虚拟机规范中定义的内存区域，是一种基于Channel与缓冲区Buffer的I/O方式，可以使用native函数库直接分配 堆外内存，然后通过一个存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。 对象探秘 对象的内存布局：（以HotSpot虚拟机为例），对象在内存中存储的布局可以分为3块区域：对象头 + 实例数据 + 对齐填充 对象头：1.存储对象自身的运行数据（hash码，GC分代年龄，锁状态标志，线程持有的锁，偏向线程ID，偏向时间戳等） MarkWord 2.类型指针，指向其类元数据的指针 java沙箱： 类装载器、class文件检查器、内置于java虚拟机(及语言)的安全特性、安全管理器及javaapi(防止对外资源的不安全操作) 类加载的双亲委派方式，防止试图通过替换来进行恶意类的加载；运行包概念防止了恶意类对信任包的访问；运行自定义加载类通过类名检查直接丢出安全异常；保护域； class文件检查器保证装载的class文件内容有正确的结构，防止恶意特制的class文件的威胁(jvm并不会知道class文件是来自java编译器产生的还是黑客特质的)；4轮扫描 java虚拟机(及语言)的内置安全特性
     </div>
 
     
     <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
         
-        <div class="minilogo" style="background-image: url('/images/avatar-64x64.png');"></div>
+        <div class="minilogo" style="background-image: url('/images/luff.jpeg');"></div>
         <div>
-            <strong><a href="http://example.com/">Firstname Lastname</a></strong>
-            <span>Oct 4, 2015</span>
+            <strong><a href="http://zhengdi1992.github.io">di, zheng</a></strong>
+            <span>Jan 19, 2017</span>
         </div>
     </div>
 
@@ -149,26 +145,22 @@ specimen book.</p>
 <div class="mdl-card mdl-cell mdl-cell--12-col">
 
     
-    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#268368;">
-        <h3><a href="/post/another/" >Stellar Post</a></h3>
+    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#645281;">
+        <h3><a href="/post/IO/" >IO 杂谈</a></h3>
     </div>
 
     
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.</p>
-
+        何为IO 简单的说,IO即为输入/输出(Input/Output),我的理解是一种数据交互的行为。 因为我们的计算机是基于数字来表达信息，我们的计算机也不是仅仅存储数据(当然存储也是要走磁盘IO的), 更多的是信息的交互,互联网时代,数据/信息的价值也显得尤为重要。有数据，有交互那就自然有IO,简单的看,似乎可以将数据进入内存认为Input,反之数据从内存交付给外部认为是Output。 Java 里的IO 作为一名Java工程师，我将从Java的角度下闲谈一下IO。Java API 给我们提供了两个基础接口InputStream/OutputStream用来操作数据流。 IO应用
     </div>
 
     
     <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
         
-        <div class="minilogo" style="background-image: url('/images/avatar-64x64.png');"></div>
+        <div class="minilogo" style="background-image: url('/images/luff.jpeg');"></div>
         <div>
-            <strong><a href="http://example.com/">Firstname Lastname</a></strong>
-            <span>Aug 26, 2015</span>
+            <strong><a href="http://zhengdi1992.github.io">di, zheng</a></strong>
+            <span>Dec 10, 2016</span>
         </div>
     </div>
 
@@ -180,116 +172,22 @@ specimen book.</p>
 <div class="mdl-card mdl-cell mdl-cell--12-col">
 
     
-    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#789456;">
-        <h3><a href="/post/third/" >Third Post</a></h3>
+    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#856324;">
+        <h3><a href="/post/welcome/" >Welcome To My Blog</a></h3>
     </div>
 
     
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-
+        &#8195;&#8195;搁置了几个月的博客计划，终于要开始落地了，这是我新开的博客，我将会在我的工作之余，尽量更新一些博文，聊聊技术，谈谈生活，追追梦想。 我期望能通过博客的方式，记录自己的生活，见证自己的成长，同时也是生活经历/工作经验的沉淀，文中有错误或不当之处，还请大家多多见谅，虚心接受大家的批评与指点。 欢迎大家关注~
     </div>
 
     
     <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
         
-        <div class="minilogo" style="background-image: url('/images/avatar-64x64.png');"></div>
+        <div class="minilogo" style="background-image: url('/images/luff.jpeg');"></div>
         <div>
-            <strong><a href="http://example.com/">Firstname Lastname</a></strong>
-            <span>Aug 20, 2015</span>
-        </div>
-    </div>
-
-</div>
-     
- 
-    
-        
-<div class="mdl-card mdl-cell mdl-cell--12-col">
-
-    
-    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#954351;">
-        <h3><a href="/post/another2/" >Amazing Post</a></h3>
-    </div>
-
-    
-    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.</p>
-
-    </div>
-
-    
-    <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-        
-        <div class="minilogo" style="background-image: url('/images/avatar-64x64.png');"></div>
-        <div>
-            <strong><a href="http://example.com/">Firstname Lastname</a></strong>
-            <span>Aug 19, 2015</span>
-        </div>
-    </div>
-
-</div>
-     
- 
-    
-        
-<div class="mdl-card mdl-cell mdl-cell--12-col">
-
-    
-    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#838238;">
-        <h3><a href="/post/andyetanother/" >Awesome Post</a></h3>
-    </div>
-
-    
-    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.</p>
-
-    </div>
-
-    
-    <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-        
-        <div class="minilogo" style="background-image: url('/images/avatar-64x64.png');"></div>
-        <div>
-            <strong><a href="http://example.com/">Firstname Lastname</a></strong>
-            <span>Aug 19, 2015</span>
-        </div>
-    </div>
-
-</div>
-     
- 
-    
-        
-<div class="mdl-card mdl-cell mdl-cell--12-col">
-
-    
-    <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#263654;">
-        <h3><a href="/post/another1/" >Fantastic Post</a></h3>
-    </div>
-
-    
-    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.</p>
-
-    </div>
-
-    
-    <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-        
-        <div class="minilogo" style="background-image: url('/images/avatar-64x64.png');"></div>
-        <div>
-            <strong><a href="http://example.com/">Firstname Lastname</a></strong>
-            <span>Aug 19, 2015</span>
+            <strong><a href="http://zhengdi1992.github.io">di, zheng</a></strong>
+            <span>Dec 10, 2016</span>
         </div>
     </div>
 

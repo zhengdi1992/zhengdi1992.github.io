@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="My thoughts and rambles">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>About</title>
+        <title>java内存模型学习</title>
         
         <meta name="mobile-web-app-capable" content="yes">
         <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
@@ -27,12 +27,14 @@
         <link rel="stylesheet" href="/css/ionicons.min.css"/>
         <link rel="stylesheet" href="/css/material.grey-orange.min.css"/>
         <link rel="stylesheet" href="/css/styles.css"/>
-        
+          <link rel="stylesheet" href="/css/prism.css" />  
 </head>
 
 <body style="background-image: url('/images/background.jpg');">
      
-        <div class="hugo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
+         
+            <div class="hugo-blog hugo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">  
+        
     
         
         
@@ -62,37 +64,83 @@
     </div>
     
     <main class="mdl-layout__content">
-    
-    <header class="mdl-layout__header mdl-layout__header--transparent mdl-layout__header--scroll">
-        <div class="mdl-layout__header-row">
-            
-            
-            
-            <div class="mdl-layout-spacer"></div>
-            
-            <nav class="mdl-navigation">
-                <a class='mdl-navigation__link ' href="/">Home</a>
-                <a class='mdl-navigation__link ' href="/post">Articles</a>
-                <a class='mdl-navigation__link ' href="/project">Projects</a>
-                <a class='mdl-navigation__link ' href="/about">About</a>
-            </nav>
-        </div>
-    </header>
-    <div class="mdl-layout__drawer">
+
+<div class="hugo-blog__posts mdl-grid">
+    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
         
-        <nav class="mdl-navigation">
-            <a class='mdl-navigation__link ' href="/">Home</a>
-            <a class='mdl-navigation__link ' href="/post">Articles</a>
-            <a class='mdl-navigation__link ' href="/project">Projects</a>
-            <a class='mdl-navigation__link ' href="/about">About</a>
-        </nav>
+        <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#645281;">
+            <h3 >Java内存模型学习</h3>
+        </div>
+          
+        <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+            <div class="minilogo" style="background-image: url('/images/luff.jpeg');"></div>
+            <div>
+                <strong>di, zheng</strong>
+                <span>Jan 19, 2017</span>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+        </div>
+            
+        <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
+            
+
+<h4 id="java内存模型学习笔记">JAVA内存模型学习笔记</h4>
+
+<p>jvm运行时的数据区域包括：
+方法区、堆 (所有线程共享)
+虚拟机栈、本地方法栈、程序计数器 (线程隔离数据区)
+执行引擎、本地库接口、本地方法库</p>
+
+<p>程序计数器：线程私有,一块较小的内存空间，可以理解为当前线程执行的字节码的行号指令器，控制字节码的指令执行，线程切换时状态的保留和恢复等；
+当执行java方法时，记录正在执行的虚拟机字节码指令，当执行本地native方法时则为undefined,此区域也是jvm规范中唯一一个没有规定任何OutOfMemoryError情况的区域。</p>
+
+<p>虚拟机栈：线程私有，与线程共生死，执行java方法时会入栈栈帧,存储单位为solt，double和long需要两个solt(因此可能造成并发问题,需要注意)</p>
+
+<p>本地方法栈：线程私有，同虚拟机栈，不过是虚拟机使用到native方法服务时使用，有StackOverFlowError和OutOfMemoryError异常。</p>
+
+<p>直接内存：Direct Memory 非jvm运行时数据的一部分，亦非java虚拟机规范中定义的内存区域，是一种基于Channel与缓冲区Buffer的I/O方式，可以使用native函数库直接分配
+堆外内存，然后通过一个存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。</p>
+
+<h4 id="对象探秘">对象探秘</h4>
+
+<p>对象的内存布局：（以HotSpot虚拟机为例），对象在内存中存储的布局可以分为3块区域：对象头 + 实例数据 + 对齐填充</p>
+
+<p>对象头：1.存储对象自身的运行数据（hash码，GC分代年龄，锁状态标志，线程持有的锁，偏向线程ID，偏向时间戳等） MarkWord
+2.类型指针，指向其类元数据的指针</p>
+
+<p>java沙箱：
+类装载器、class文件检查器、内置于java虚拟机(及语言)的安全特性、安全管理器及javaapi(防止对外资源的不安全操作)</p>
+
+<p>类加载的双亲委派方式，防止试图通过替换来进行恶意类的加载；运行包概念防止了恶意类对信任包的访问；运行自定义加载类通过类名检查直接丢出安全异常；保护域；</p>
+
+<p>class文件检查器保证装载的class文件内容有正确的结构，防止恶意特制的class文件的威胁(jvm并不会知道class文件是来自java编译器产生的还是黑客特质的)；4轮扫描</p>
+
+<p>java虚拟机(及语言)的内置安全特性</p>
+
+        </div>
+        
+        <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments"> 
+            <a href=http://zhengdi1992.github.io>di, zheng</a>
+            <p>Senior Develop Engineer,Major in Java</p>
+        </div>  
     </div>
 
-<h3>Generic List Heading</h3>
+    <nav class="hugo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <a href="/post/IO/" class="hugo-nav__button">
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+           <i class="icon ion-android-arrow-back"></i>
+        </button>
+        Older
+    </a>
+    <div class="section-spacer"></div>
+    
+</nav> 
 
 
-
-
+</div>
 
             <footer class="mdl-mini-footer">
                 <div class="mdl-mini-footer--left-section">
@@ -135,42 +183,7 @@
         <div class="mdl-layout__obfuscator"></div>
     </div>
     <script src="/js/material.min.js"></script>
+     <script src="/js/prism.js"></script>
     
-     <script>
-    Array.prototype.forEach.call(document.querySelectorAll('.mdl-card__media'), function(el) {
-        var link = el.querySelector('a');
-        if (!link) {
-            return;
-        }
-        var target = link.getAttribute('href');
-        if (!target) {
-            return;
-        }
-        el.addEventListener('click', function() {
-            location.href = target;
-        });
-    });
-</script> <script>
-    (function () {
-    var VISIBLE_CLASS = "is-showing-options",
-        fab_btn  = document.getElementById("fab_btn"),
-        fab_ctn  = document.getElementById("fab_ctn"),
-        showOpts = function(e) {
-          var processClick = function (evt) {
-            if (e !== evt) {
-              fab_ctn.classList.remove(VISIBLE_CLASS);
-              fab_ctn.IS_SHOWING = false;
-              document.removeEventListener("click", processClick);
-            }
-          };
-          if (!fab_ctn.IS_SHOWING) {
-            fab_ctn.IS_SHOWING = true;
-            fab_ctn.classList.add(VISIBLE_CLASS);
-            document.addEventListener("click", processClick);
-          }
-        };
-    fab_btn.addEventListener("click", showOpts);
-    }.call(this));
-</script>
 </body>
 </html>

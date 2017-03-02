@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="My thoughts and rambles">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>About</title>
+        <title>Welcome to my blog</title>
         
         <meta name="mobile-web-app-capable" content="yes">
         <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
@@ -27,12 +27,14 @@
         <link rel="stylesheet" href="/css/ionicons.min.css"/>
         <link rel="stylesheet" href="/css/material.grey-orange.min.css"/>
         <link rel="stylesheet" href="/css/styles.css"/>
-        
+          <link rel="stylesheet" href="/css/prism.css" />  
 </head>
 
 <body style="background-image: url('/images/background.jpg');">
      
-        <div class="hugo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
+         
+            <div class="hugo-blog hugo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">  
+        
     
         
         
@@ -62,37 +64,52 @@
     </div>
     
     <main class="mdl-layout__content">
-    
-    <header class="mdl-layout__header mdl-layout__header--transparent mdl-layout__header--scroll">
-        <div class="mdl-layout__header-row">
-            
-            
-            
-            <div class="mdl-layout-spacer"></div>
-            
-            <nav class="mdl-navigation">
-                <a class='mdl-navigation__link ' href="/">Home</a>
-                <a class='mdl-navigation__link ' href="/post">Articles</a>
-                <a class='mdl-navigation__link ' href="/project">Projects</a>
-                <a class='mdl-navigation__link ' href="/about">About</a>
-            </nav>
-        </div>
-    </header>
-    <div class="mdl-layout__drawer">
+
+<div class="hugo-blog__posts mdl-grid">
+    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
         
-        <nav class="mdl-navigation">
-            <a class='mdl-navigation__link ' href="/">Home</a>
-            <a class='mdl-navigation__link ' href="/post">Articles</a>
-            <a class='mdl-navigation__link ' href="/project">Projects</a>
-            <a class='mdl-navigation__link ' href="/about">About</a>
-        </nav>
+        <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#856324;">
+            <h3 >Welcome To My Blog</h3>
+        </div>
+          
+        <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+            <div class="minilogo" style="background-image: url('/images/luff.jpeg');"></div>
+            <div>
+                <strong>di, zheng</strong>
+                <span>Dec 10, 2016</span>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+        </div>
+            
+        <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
+            <p>&#8195;&#8195;搁置了几个月的博客计划，终于要开始落地了，这是我新开的博客，我将会在我的工作之余，尽量更新一些博文，聊聊技术，谈谈生活，追追梦想。
+我期望能通过博客的方式，记录自己的生活，见证自己的成长，同时也是生活经历/工作经验的沉淀，文中有错误或不当之处，还请大家多多见谅，虚心接受大家的批评与指点。</p>
+
+<p><strong>欢迎大家关注~</strong></p>
+
+        </div>
+        
+        <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments"> 
+            <a href=http://zhengdi1992.github.io>di, zheng</a>
+            <p>Senior Develop Engineer,Major in Java</p>
+        </div>  
     </div>
 
-<h3>Generic List Heading</h3>
+    <nav class="hugo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <div class="section-spacer"></div>
+    
+    <a href="/post/IO/" class="hugo-nav__button">Newer
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+           <i class="icon ion-android-arrow-forward"></i>
+      </button>
+    </a>
+</nav> 
 
 
-
-
+</div>
 
             <footer class="mdl-mini-footer">
                 <div class="mdl-mini-footer--left-section">
@@ -135,42 +152,7 @@
         <div class="mdl-layout__obfuscator"></div>
     </div>
     <script src="/js/material.min.js"></script>
+     <script src="/js/prism.js"></script>
     
-     <script>
-    Array.prototype.forEach.call(document.querySelectorAll('.mdl-card__media'), function(el) {
-        var link = el.querySelector('a');
-        if (!link) {
-            return;
-        }
-        var target = link.getAttribute('href');
-        if (!target) {
-            return;
-        }
-        el.addEventListener('click', function() {
-            location.href = target;
-        });
-    });
-</script> <script>
-    (function () {
-    var VISIBLE_CLASS = "is-showing-options",
-        fab_btn  = document.getElementById("fab_btn"),
-        fab_ctn  = document.getElementById("fab_ctn"),
-        showOpts = function(e) {
-          var processClick = function (evt) {
-            if (e !== evt) {
-              fab_ctn.classList.remove(VISIBLE_CLASS);
-              fab_ctn.IS_SHOWING = false;
-              document.removeEventListener("click", processClick);
-            }
-          };
-          if (!fab_ctn.IS_SHOWING) {
-            fab_ctn.IS_SHOWING = true;
-            fab_ctn.classList.add(VISIBLE_CLASS);
-            document.addEventListener("click", processClick);
-          }
-        };
-    fab_btn.addEventListener("click", showOpts);
-    }.call(this));
-</script>
 </body>
 </html>

@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="My thoughts and rambles">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>About</title>
+        <title>IO 杂谈</title>
         
         <meta name="mobile-web-app-capable" content="yes">
         <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
@@ -27,12 +27,14 @@
         <link rel="stylesheet" href="/css/ionicons.min.css"/>
         <link rel="stylesheet" href="/css/material.grey-orange.min.css"/>
         <link rel="stylesheet" href="/css/styles.css"/>
-        
+          <link rel="stylesheet" href="/css/prism.css" />  
 </head>
 
 <body style="background-image: url('/images/background.jpg');">
      
-        <div class="hugo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
+         
+            <div class="hugo-blog hugo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">  
+        
     
         
         
@@ -62,37 +64,67 @@
     </div>
     
     <main class="mdl-layout__content">
-    
-    <header class="mdl-layout__header mdl-layout__header--transparent mdl-layout__header--scroll">
-        <div class="mdl-layout__header-row">
-            
-            
-            
-            <div class="mdl-layout-spacer"></div>
-            
-            <nav class="mdl-navigation">
-                <a class='mdl-navigation__link ' href="/">Home</a>
-                <a class='mdl-navigation__link ' href="/post">Articles</a>
-                <a class='mdl-navigation__link ' href="/project">Projects</a>
-                <a class='mdl-navigation__link ' href="/about">About</a>
-            </nav>
-        </div>
-    </header>
-    <div class="mdl-layout__drawer">
+
+<div class="hugo-blog__posts mdl-grid">
+    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
         
-        <nav class="mdl-navigation">
-            <a class='mdl-navigation__link ' href="/">Home</a>
-            <a class='mdl-navigation__link ' href="/post">Articles</a>
-            <a class='mdl-navigation__link ' href="/project">Projects</a>
-            <a class='mdl-navigation__link ' href="/about">About</a>
-        </nav>
+        <div class="mdl-card__media mdl-color-text--grey-50" style=" background-color:#645281;">
+            <h3 >IO 杂谈</h3>
+        </div>
+          
+        <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+            <div class="minilogo" style="background-image: url('/images/luff.jpeg');"></div>
+            <div>
+                <strong>di, zheng</strong>
+                <span>Dec 10, 2016</span>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+        </div>
+            
+        <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
+            
+
+<h4 id="何为io">何为IO</h4>
+
+<p>简单的说,IO即为输入/输出(Input/Output),我的理解是一种数据交互的行为。
+因为我们的计算机是基于数字来表达信息，我们的计算机也不是仅仅存储数据(当然存储也是要走磁盘IO的),
+更多的是信息的交互,互联网时代,数据/信息的价值也显得尤为重要。有数据，有交互那就自然有IO,简单的看,似乎可以将数据进入内存认为Input,反之数据从内存交付给外部认为是Output。</p>
+
+<h4 id="java-里的io">Java 里的IO</h4>
+
+<p>作为一名Java工程师，我将从Java的角度下闲谈一下IO。Java API 给我们提供了两个基础接口InputStream/OutputStream用来操作数据流。</p>
+
+<h4 id="io应用">IO应用</h4>
+
+        </div>
+        
+        <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments"> 
+            <a href=http://zhengdi1992.github.io>di, zheng</a>
+            <p>Senior Develop Engineer,Major in Java</p>
+        </div>  
     </div>
 
-<h3>Generic List Heading</h3>
+    <nav class="hugo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <a href="/post/welcome/" class="hugo-nav__button">
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+           <i class="icon ion-android-arrow-back"></i>
+        </button>
+        Older
+    </a>
+    <div class="section-spacer"></div>
+    
+    <a href="/post/jvm/" class="hugo-nav__button">Newer
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+           <i class="icon ion-android-arrow-forward"></i>
+      </button>
+    </a>
+</nav> 
 
 
-
-
+</div>
 
             <footer class="mdl-mini-footer">
                 <div class="mdl-mini-footer--left-section">
@@ -135,42 +167,7 @@
         <div class="mdl-layout__obfuscator"></div>
     </div>
     <script src="/js/material.min.js"></script>
+     <script src="/js/prism.js"></script>
     
-     <script>
-    Array.prototype.forEach.call(document.querySelectorAll('.mdl-card__media'), function(el) {
-        var link = el.querySelector('a');
-        if (!link) {
-            return;
-        }
-        var target = link.getAttribute('href');
-        if (!target) {
-            return;
-        }
-        el.addEventListener('click', function() {
-            location.href = target;
-        });
-    });
-</script> <script>
-    (function () {
-    var VISIBLE_CLASS = "is-showing-options",
-        fab_btn  = document.getElementById("fab_btn"),
-        fab_ctn  = document.getElementById("fab_ctn"),
-        showOpts = function(e) {
-          var processClick = function (evt) {
-            if (e !== evt) {
-              fab_ctn.classList.remove(VISIBLE_CLASS);
-              fab_ctn.IS_SHOWING = false;
-              document.removeEventListener("click", processClick);
-            }
-          };
-          if (!fab_ctn.IS_SHOWING) {
-            fab_ctn.IS_SHOWING = true;
-            fab_ctn.classList.add(VISIBLE_CLASS);
-            document.addEventListener("click", processClick);
-          }
-        };
-    fab_btn.addEventListener("click", showOpts);
-    }.call(this));
-</script>
 </body>
 </html>

@@ -6,562 +6,84 @@
     <description>Recent content in Post on Alardear Home</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 04 Oct 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Jan 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://zhengdi1992.github.io/categories/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Cool Post</title>
-      <link>http://zhengdi1992.github.io/post/coolpost/</link>
-      <pubDate>Sun, 04 Oct 2015 00:00:00 +0000</pubDate>
+      <title>java内存模型学习</title>
+      <link>http://zhengdi1992.github.io/post/jvm/</link>
+      <pubDate>Thu, 19 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://zhengdi1992.github.io/post/coolpost/</guid>
+      <guid>http://zhengdi1992.github.io/post/jvm/</guid>
       <description>
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;h4 id=&#34;java内存模型学习笔记&#34;&gt;JAVA内存模型学习笔记&lt;/h4&gt;
 
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
+&lt;p&gt;jvm运行时的数据区域包括：
+方法区、堆 (所有线程共享)
+虚拟机栈、本地方法栈、程序计数器 (线程隔离数据区)
+执行引擎、本地库接口、本地方法库&lt;/p&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;p&gt;程序计数器：线程私有,一块较小的内存空间，可以理解为当前线程执行的字节码的行号指令器，控制字节码的指令执行，线程切换时状态的保留和恢复等；
+当执行java方法时，记录正在执行的虚拟机字节码指令，当执行本地native方法时则为undefined,此区域也是jvm规范中唯一一个没有规定任何OutOfMemoryError情况的区域。&lt;/p&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;p&gt;虚拟机栈：线程私有，与线程共生死，执行java方法时会入栈栈帧,存储单位为solt，double和long需要两个solt(因此可能造成并发问题,需要注意)&lt;/p&gt;
 
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
+&lt;p&gt;本地方法栈：线程私有，同虚拟机栈，不过是虚拟机使用到native方法服务时使用，有StackOverFlowError和OutOfMemoryError异常。&lt;/p&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;p&gt;直接内存：Direct Memory 非jvm运行时数据的一部分，亦非java虚拟机规范中定义的内存区域，是一种基于Channel与缓冲区Buffer的I/O方式，可以使用native函数库直接分配
+堆外内存，然后通过一个存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。&lt;/p&gt;
+
+&lt;h4 id=&#34;对象探秘&#34;&gt;对象探秘&lt;/h4&gt;
+
+&lt;p&gt;对象的内存布局：（以HotSpot虚拟机为例），对象在内存中存储的布局可以分为3块区域：对象头 + 实例数据 + 对齐填充&lt;/p&gt;
+
+&lt;p&gt;对象头：1.存储对象自身的运行数据（hash码，GC分代年龄，锁状态标志，线程持有的锁，偏向线程ID，偏向时间戳等） MarkWord
+2.类型指针，指向其类元数据的指针&lt;/p&gt;
+
+&lt;p&gt;java沙箱：
+类装载器、class文件检查器、内置于java虚拟机(及语言)的安全特性、安全管理器及javaapi(防止对外资源的不安全操作)&lt;/p&gt;
+
+&lt;p&gt;类加载的双亲委派方式，防止试图通过替换来进行恶意类的加载；运行包概念防止了恶意类对信任包的访问；运行自定义加载类通过类名检查直接丢出安全异常；保护域；&lt;/p&gt;
+
+&lt;p&gt;class文件检查器保证装载的class文件内容有正确的结构，防止恶意特制的class文件的威胁(jvm并不会知道class文件是来自java编译器产生的还是黑客特质的)；4轮扫描&lt;/p&gt;
+
+&lt;p&gt;java虚拟机(及语言)的内置安全特性&lt;/p&gt;
 </description>
     </item>
     
     <item>
-      <title>Stellar Post</title>
-      <link>http://zhengdi1992.github.io/post/another/</link>
-      <pubDate>Wed, 26 Aug 2015 00:00:00 +0000</pubDate>
+      <title>IO 杂谈</title>
+      <link>http://zhengdi1992.github.io/post/IO/</link>
+      <pubDate>Sat, 10 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://zhengdi1992.github.io/post/another/</guid>
+      <guid>http://zhengdi1992.github.io/post/IO/</guid>
       <description>
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;h4 id=&#34;何为io&#34;&gt;何为IO&lt;/h4&gt;
 
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
+&lt;p&gt;简单的说,IO即为输入/输出(Input/Output),我的理解是一种数据交互的行为。
+因为我们的计算机是基于数字来表达信息，我们的计算机也不是仅仅存储数据(当然存储也是要走磁盘IO的),
+更多的是信息的交互,互联网时代,数据/信息的价值也显得尤为重要。有数据，有交互那就自然有IO,简单的看,似乎可以将数据进入内存认为Input,反之数据从内存交付给外部认为是Output。&lt;/p&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;h4 id=&#34;java-里的io&#34;&gt;Java 里的IO&lt;/h4&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;p&gt;作为一名Java工程师，我将从Java的角度下闲谈一下IO。Java API 给我们提供了两个基础接口InputStream/OutputStream用来操作数据流。&lt;/p&gt;
 
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;h4 id=&#34;io应用&#34;&gt;IO应用&lt;/h4&gt;
 </description>
     </item>
     
     <item>
-      <title>Third Post</title>
-      <link>http://zhengdi1992.github.io/post/third/</link>
-      <pubDate>Thu, 20 Aug 2015 00:00:00 +0000</pubDate>
+      <title>Welcome to my blog</title>
+      <link>http://zhengdi1992.github.io/post/welcome/</link>
+      <pubDate>Sat, 10 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://zhengdi1992.github.io/post/third/</guid>
-      <description>&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Amazing Post</title>
-      <link>http://zhengdi1992.github.io/post/another2/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/another2/</guid>
-      <description>
+      <guid>http://zhengdi1992.github.io/post/welcome/</guid>
+      <description>&lt;p&gt;&amp;#8195;&amp;#8195;搁置了几个月的博客计划，终于要开始落地了，这是我新开的博客，我将会在我的工作之余，尽量更新一些博文，聊聊技术，谈谈生活，追追梦想。
+我期望能通过博客的方式，记录自己的生活，见证自己的成长，同时也是生活经历/工作经验的沉淀，文中有错误或不当之处，还请大家多多见谅，虚心接受大家的批评与指点。&lt;/p&gt;
 
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Awesome Post</title>
-      <link>http://zhengdi1992.github.io/post/andyetanother/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/andyetanother/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Fantastic Post</title>
-      <link>http://zhengdi1992.github.io/post/another1/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/another1/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Second Post</title>
-      <link>http://zhengdi1992.github.io/post/second/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/second/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing  and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Sweet Post</title>
-      <link>http://zhengdi1992.github.io/post/yetanother/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/yetanother/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>That Post</title>
-      <link>http://zhengdi1992.github.io/post/omgsomanymore/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/omgsomanymore/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>This Post</title>
-      <link>http://zhengdi1992.github.io/post/omgsomany/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/omgsomany/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Wow! Such Post!</title>
-      <link>http://zhengdi1992.github.io/post/another3/</link>
-      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/another3/</guid>
-      <description>
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book.  It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&#34;lorem-ipsum-1&#34;&gt;Lorem Ipsum&lt;/h3&gt;
-
-&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the leap into
-electronic typesetting, remaining essentially unchanged. It was popularised in
-the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-and more recently with desktop publishing software like Aldus PageMaker
-including versions of Lorem Ipsum.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>First Post</title>
-      <link>http://zhengdi1992.github.io/post/first/</link>
-      <pubDate>Tue, 18 Aug 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://zhengdi1992.github.io/post/first/</guid>
-      <description>&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-It has survived not only five centuries, but also the leap into electronic typesetting,
-remaining essentially unchanged. It was popularised in the 1960s with the release of
-Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-publishing software like Aldus PageMaker including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;npm install
-npm install mylib --save
-node server.js
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s.
-It was popularised in the 1960s with the release of Letraset sheets containing
-Lorem Ipsum passages, and more recently with desktop publishing software like
-Aldus PageMaker including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;var myfunc = function() {
-    t = this;
-    t.somemethod = function() {
-        return 1;
-    };
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Lorem Ipsum has been the industry&amp;rsquo;s standard dummy text ever since the 1500s.
-It was popularised in the 1960s with the release of Letraset sheets containing
-Lorem Ipsum passages, and more recently with desktop publishing software like
-Aldus PageMaker including versions of Lorem Ipsum.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;欢迎大家关注~&lt;/strong&gt;&lt;/p&gt;
 </description>
     </item>
     
